@@ -38,6 +38,7 @@ Movement is tested without VR enabled to allow PC testing on Linux.
 ## Author
 Tomás Araújo
 
+---
 
 # Technical Report  
 **VR Farm Environment   — My First VR Environment**  
@@ -141,7 +142,7 @@ The intended build configuration includes:
 - Minimum API Level: Android 10 (Level 29)  
 - XR Plugin enabled under Android  
 
-Due to OS and hardware limitations, APK generation was not performed.
+Due to OS and hardware limitations (Linux environment without access to Meta Quest), APK generation was **not performed**.
 
 ---
 
@@ -223,7 +224,6 @@ After asset import, the Skybox required manual reassignment in Lighting Settings
 Scene: `MainScene`
 
 ```
-
 [--- MANAGEMENT ---]
 EventSystem
 
@@ -256,7 +256,6 @@ Vegetation Objects
 ## 8. Repository Structure
 
 ```
-
 /Assets/_Project
 /Art
 /Scenes
