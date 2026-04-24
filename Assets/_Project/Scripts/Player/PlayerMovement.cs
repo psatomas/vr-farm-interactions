@@ -1,17 +1,39 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// Handles first-person player movement, camera look, and interaction system
+/// for the VR Farm environment (PC-based prototype).
+/// 
+/// Responsibilities:
+/// - Character movement using CharacterController
+/// - Mouse-based camera rotation
+/// - Raycast-based interaction system
+/// - Triggering interactable objects (e.g., ChickenSound)
+/// </summary>
+
 public class PlayerMovement : MonoBehaviour
 {
     private CharacterController controller;
     private PlayerControls controls;
+
     private Vector2 moveInput;
     private Vector2 lookInput;
 
+    [Header("Movement")]
     public float speed = 10f;
+
+    [Header("Camera")]
     public float mouseSensitivity = 2f;
     private float xRotation = 0f;
 
+    [Header("Interaction")]
+    public float interactDistance = 15f;
+
+    /// <summary>
+    /// Initializes input system and required components.
+    /// Binds movement and look input callbacks.
+    /// </summary>
     void Awake()
     {
         controller = GetComponent<CharacterController>();
@@ -26,72 +48,67 @@ public class PlayerMovement : MonoBehaviour
 
     void OnEnable() => controls.Enable();
     void OnDisable() => controls.Disable();
-    void Start()
+
+    /// <summary>
+    /// Main update loop handling movement, camera rotation, and interaction input.
+    /// </summary>
+    void Update()
     {
-        Debug.Log("START WORKS");
+        HandleMovement();
+        HandleMouseLook();
+
+        // Interaction trigger (mouse click)
+        if (Mouse.current.leftButton.wasPressedThisFrame)
+        {
+            TryInteract();
+        }
     }
 
-void Update()
-{
-    HandleMovement();
-    HandleMouseLook();
-
-    if (Keyboard.current.eKey.wasPressedThisFrame ||
-        Mouse.current.leftButton.wasPressedThisFrame)
-    {
-        TryInteract();
-    }
-}
-
+    /// <summary>
+    /// Moves the player using CharacterController based on input direction.
+    /// </summary>
     void HandleMovement()
     {
         Vector3 move = transform.right * moveInput.x + transform.forward * moveInput.y;
         controller.Move(move * speed * Time.deltaTime);
     }
 
+    /// <summary>
+    /// Handles first-person camera rotation using mouse input.
+    /// Vertical rotation is clamped to prevent full flipping.
+    /// </summary>
     void HandleMouseLook()
     {
+        Camera cam = Camera.main;
+        if (cam == null) return;
+
         xRotation -= lookInput.y * mouseSensitivity;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
-        Camera.main.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        cam.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         transform.Rotate(Vector3.up * lookInput.x * mouseSensitivity);
     }
 
-    // 👇 ADD THIS METHOD
+    /// <summary>
+    /// Performs a raycast from screen center to detect interactable objects.
+    /// If a ChickenSound component is detected, triggers its audio response.
+    /// </summary>
     void TryInteract()
     {
-        Debug.Log("Interact triggered");
-
         Camera cam = Camera.main;
-        if (cam == null)
+        if (cam == null) return;
+
+        Vector2 center = new Vector2(Screen.width / 2f, Screen.height / 2f);
+        Ray ray = cam.ScreenPointToRay(center);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, interactDistance))
         {
-            Debug.LogError("No Main Camera found!");
-            return;
-        }
-
-        Ray ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
-
-        if (Physics.Raycast(ray, out RaycastHit hit, 5f))
-        {
-            Debug.Log("Hit: " + hit.collider.name);
-
             ChickenSound chicken = hit.collider.GetComponentInParent<ChickenSound>();
 
             if (chicken != null)
             {
-                Debug.Log("Chicken detected → playing sound");
                 chicken.PlayCluck();
             }
-            else
-            {
-                Debug.Log("Hit object is not chicken");
-            }
-        }
-        else
-        {
-            Debug.Log("Nothing hit");
         }
     }
 }
-

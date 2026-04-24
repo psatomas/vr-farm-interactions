@@ -11,23 +11,11 @@
 [Uu]serSettings/
 MemoryCaptures/
 Recordings/
-
-############################
-# Addressables
-############################
-
 ServerData/
+[Ee]xportedObj/
 
 ############################
-# IDEs / Editors
-############################
-
-.vscode/
-.idea/
-.vs/
-
-############################
-# Visual Studio / Rider
+# Unity Cache / Misc
 ############################
 
 *.csproj
@@ -42,6 +30,27 @@ ServerData/
 *.pdb
 
 ############################
+# Addressables
+############################
+
+ServerData/
+
+############################
+# TextMesh Pro (Imported Resources)
+############################
+
+Assets/TextMesh Pro/
+Assets/TextMesh Pro.meta
+
+############################
+# IDEs / Editors
+############################
+
+.vscode/
+.idea/
+.vs/
+
+############################
 # OS Files
 ############################
 
@@ -49,7 +58,16 @@ ServerData/
 Thumbs.db
 
 ############################
-# Large Assets (optional)
+# Logs (extra safety)
 ############################
+
+[Ll]ogs/
+
+############################
+# Optional: Large / Generated Artifacts
+############################
+
+*.log
+*.tmp
 
 
