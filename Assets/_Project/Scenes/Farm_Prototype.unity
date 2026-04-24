@@ -1470,8 +1470,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 5.7594094, y: 9.6917, z: 8.29188}
-  m_Center: {x: -2.379704, y: 4.345849, z: -3.6459405}
+  m_Size: {x: 5, y: 5, z: 5}
+  m_Center: {x: 0, y: 2, z: 0}
 --- !u!1 &1845056896 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: a59e722e2135ed1fa8a5935141cbb7b2, type: 3}
@@ -1766,6 +1766,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecf67fa228a5dcf2196e67d1b63fb879, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
+  speed: 10
+  mouseSensitivity: 2
 --- !u!143 &2134809506
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1848,7 +1850,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -9.58, y: 0.001, z: -7.4904}
-  m_LocalScale: {x: 0.1896455, y: 0.1896455, z: 0.1896455}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2910367958539896967}
@@ -1932,7 +1934,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
