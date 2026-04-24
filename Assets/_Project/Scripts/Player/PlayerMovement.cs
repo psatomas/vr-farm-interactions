@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 moveInput;
     private Vector2 lookInput;
 
-    public float speed = 3f;
+    public float speed = 10f;
     public float mouseSensitivity = 2f;
     private float xRotation = 0f;
 
@@ -26,12 +26,22 @@ public class PlayerMovement : MonoBehaviour
 
     void OnEnable() => controls.Enable();
     void OnDisable() => controls.Disable();
-
-    void Update()
+    void Start()
     {
-        HandleMovement();
-        HandleMouseLook();
+        Debug.Log("START WORKS");
     }
+
+void Update()
+{
+    HandleMovement();
+    HandleMouseLook();
+
+    if (Keyboard.current.eKey.wasPressedThisFrame ||
+        Mouse.current.leftButton.wasPressedThisFrame)
+    {
+        TryInteract();
+    }
+}
 
     void HandleMovement()
     {
@@ -46,6 +56,42 @@ public class PlayerMovement : MonoBehaviour
 
         Camera.main.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         transform.Rotate(Vector3.up * lookInput.x * mouseSensitivity);
+    }
+
+    // 👇 ADD THIS METHOD
+    void TryInteract()
+    {
+        Debug.Log("Interact triggered");
+
+        Camera cam = Camera.main;
+        if (cam == null)
+        {
+            Debug.LogError("No Main Camera found!");
+            return;
+        }
+
+        Ray ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
+
+        if (Physics.Raycast(ray, out RaycastHit hit, 5f))
+        {
+            Debug.Log("Hit: " + hit.collider.name);
+
+            ChickenSound chicken = hit.collider.GetComponentInParent<ChickenSound>();
+
+            if (chicken != null)
+            {
+                Debug.Log("Chicken detected → playing sound");
+                chicken.PlayCluck();
+            }
+            else
+            {
+                Debug.Log("Hit object is not chicken");
+            }
+        }
+        else
+        {
+            Debug.Log("Nothing hit");
+        }
     }
 }
 
